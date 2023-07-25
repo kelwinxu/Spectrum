@@ -6,12 +6,12 @@ void setup(){
   frameRate(60);
   cake = loadImage("data/images/cake.jpeg");
   mazeMap = loadImage("data/images/200by200orthogonalmaze.png");
-  mazeMap.resize(height*20,0);
+  mazeMap.resize(height*15,0);
   mazeMap.filter(INVERT);
   //mazeMap.filter(BLUR,4);
   mazeMap.filter(THRESHOLD);
   map = mazeMap;
-  p = new Player(map.width/2-width/2-50, -height/2+80);
+  p = new Player(map.width/2-width/2-50, -height/2+50);
 }
 float angle;
 int xPos = 0;
