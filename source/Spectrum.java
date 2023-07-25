@@ -18,6 +18,7 @@ public class Spectrum extends PApplet {
 PImage mazeMap, cake;
 PImage map;
 public void setup(){
+  //colorMode(HSB,360,100,100);
   /* size commented out by preprocessor */;
   background(0);
   frameRate(60);
@@ -44,7 +45,7 @@ public void draw(){
   for(Light a: L){
     a.updateMovement();
   }
-  for(int i = L.size()-1; i > 0; i--){
+  for(int i = L.size()-1; i >= 0; i--){
     Light a = L.get(i);
     if(a.delete()){
       L.remove(i);
@@ -63,14 +64,16 @@ public void draw(){
   //fill(255);
   //llipse(p.xRPos, p.yRPos, 10, 10);
   popMatrix();
+  updateWave();
+  showWave();
   showText();
 }
 public void mouseWheel(MouseEvent event){
-  //if(wl >= 380 && wl <= 750){
+  if(wl >= 380 && wl <= 750){
     wl += 5*event.getCount();
-  //} else {
-  //  wl += 25*event.getCount();
-  //}
+  } else {
+    wl += 25*event.getCount();
+  }
   if(wl < -3000)
     wl = -3000;
   if(wl > 4999)
@@ -82,6 +85,7 @@ public void keyPressed(){
 public void keyReleased(){
   p.setMove(keyCode, false);
 }
+
 public int wavelenghtToRGB(int wavelength) {
   float r, g, b;
   if (wavelength >= 380 && wavelength < 440) {
@@ -150,22 +154,22 @@ public int RGBToRoundWavelength(float r, float g, float b) {
     // White
     return 0;
   }
-  if(g == 0 && b == 255){
+  if(g < 25 && b > 230){
     // Violet
     return 400;
-  } else if (r == 0 && b == 255) {
+  } else if (r < 25 && b > 230) {
     // Blue
     return 450;
-  } else if (r == 0 && g == 255) {
+  } else if (r < 25 && g > 230) {
     // Cyan
     return 500;
-  } else if (g == 255 && b == 0) {
+  } else if (g > 230 && b < 25) {
     // Green
     return 550;
-  } else if (r == 255 && g != 0 && b == 0) {
+  } else if (r < 25 && g != 0 && b < 25) {
     // Yellow
     return 600;
-  } else if (r == 255 && g == 0 && b == 0) {
+  } else if (r < 25 && g < 25 && b < 25) {
     // Red
     return 700;
   } else {
@@ -378,25 +382,25 @@ public void pellipse(float x, float y, float w, float h){
   ellipse(x*pp+xoff, y*pp, w*pp, h*pp);
 }
 public void showText(){
-  textSize(25);
+  textSize(30);
   textAlign(CENTER, CENTER);
   fill(200);
   if(wl>=0 && wl<1000){
-    text(wl+1 + "nm",height/2,100);
+    text(wl+1 + "nm",height/2,90);
   }else if(wl>=1000 && wl<2000){
-    text(wl-999 + "µm",height/2,100);
+    text(wl-999 + "µm",height/2,90);
   }else if(wl>=2000 && wl<3000){
-    text(wl-1999 + "mm",height/2,100);
+    text(wl-1999 + "mm",height/2,90);
   }else if(wl>=3000 && wl<4000){
-    text(wl-2999 + "m",height/2,100);
+    text(wl-2999 + "m",height/2,90);
   }else if(wl>=4000){
-    text(wl-3999 + "km",height/2,100);
+    text(wl-3999 + "km",height/2,90);
   }else if(wl>=-1000 && wl<0){
-    text(wl+1001 + "pm",height/2,100);
+    text(wl+1001 + "pm",height/2,90);
   }else if(wl>=-2000 && wl<-1000){
-    text(wl+2001 + "fm",height/2,100);
+    text(wl+2001 + "fm",height/2,90);
   }else if(wl<-2000){
-    text(wl+3001 + "am",height/2,100);
+    text(wl+3001 + "am",height/2,90);
   }
   if(wl >= 380 && wl <= 750){
     text("<Visible Light>",height/2,50);
@@ -419,11 +423,41 @@ public void showText(){
   }
   
   fill(255);
+  textAlign(LEFT,CENTER);
+  text(frameCount, 0, 10);
   //text(p.xPos, 100, 10);
   //text(p.yPos, 100, 50);
   text("use wasd para mover",width/2,height-100);
   
 }
+
+float teta = 0.0f;
+float amplitude = 50.0f;
+float period = 500.0f;
+float dx; 
+float[] yvalues = new float[900];
+
+public void updateWave() {
+  teta += 0.1f;
+  period = pow(map(wl,-3000,4999,4,80),1.5f);
+  dx = TWO_PI / period;
+  float x = teta;
+  for (int i = 0; i < yvalues.length; i++) {
+    yvalues[i] = sin(x)*amplitude;
+    x+=dx;
+  }
+}
+public void showWave() {
+  noStroke();
+  fill(255);
+  for (int x = 0; x < yvalues.length; x++) {
+    if(x != yvalues.length-1){
+      stroke(100);
+      line(x, amplitude+25+yvalues[x], x+1, amplitude+20+yvalues[x+1]);
+    }
+  }
+}
+
 public void drawText(){
   fill(255);
   textSize(50);

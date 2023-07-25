@@ -66,22 +66,22 @@ int RGBToRoundWavelength(float r, float g, float b) {
     // White
     return 0;
   }
-  if(g == 0 && b == 255){
+  if(g < 25 && b > 230){
     // Violet
     return 400;
-  } else if (r == 0 && b == 255) {
+  } else if (r < 25 && b > 230) {
     // Blue
     return 450;
-  } else if (r == 0 && g == 255) {
+  } else if (r < 25 && g > 230) {
     // Cyan
     return 500;
-  } else if (g == 255 && b == 0) {
+  } else if (g > 230 && b < 25) {
     // Green
     return 550;
-  } else if (r == 255 && g != 0 && b == 0) {
+  } else if (r < 25 && g != 0 && b < 25) {
     // Yellow
     return 600;
-  } else if (r == 255 && g == 0 && b == 0) {
+  } else if (r < 25 && g < 25 && b < 25) {
     // Red
     return 700;
   } else {

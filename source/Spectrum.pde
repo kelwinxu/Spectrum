@@ -1,6 +1,7 @@
 PImage mazeMap, cake;
 PImage map;
 void setup(){
+  //colorMode(HSB,360,100,100);
   size(900,900,P2D);
   background(0);
   frameRate(60);
@@ -27,7 +28,7 @@ void draw(){
   for(Light a: L){
     a.updateMovement();
   }
-  for(int i = L.size()-1; i > 0; i--){
+  for(int i = L.size()-1; i >= 0; i--){
     Light a = L.get(i);
     if(a.delete()){
       L.remove(i);
@@ -46,14 +47,16 @@ void draw(){
   //fill(255);
   //llipse(p.xRPos, p.yRPos, 10, 10);
   popMatrix();
+  updateWave();
+  showWave();
   showText();
 }
 void mouseWheel(MouseEvent event){
-  //if(wl >= 380 && wl <= 750){
+  if(wl >= 380 && wl <= 750){
     wl += 5*event.getCount();
-  //} else {
-  //  wl += 25*event.getCount();
-  //}
+  } else {
+    wl += 25*event.getCount();
+  }
   if(wl < -3000)
     wl = -3000;
   if(wl > 4999)
