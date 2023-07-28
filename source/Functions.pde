@@ -25,7 +25,7 @@ color wavelenghtToRGB(int wavelength) {
     r = 255.0;
     g = (-(wavelength - 645.0) / (645.0 - 580.0))*255.0;
     b = 0.0;
-  } else if (wavelength >= 645 && wavelength <= 750) {
+  } else if (wavelength >= 645 && wavelength < 750) {
     // Red
     r = 255.0;
     g = 0.0;
@@ -37,53 +37,70 @@ color wavelenghtToRGB(int wavelength) {
   }
   return color(r, g, b);
 }
-int roundWavelength(int wavelength) {
+int wavelengthId(int wavelength) {
   if (wavelength >= 380 && wavelength < 440) {
     // Violet
-    return 400;
+    return 6;
   } else if (wavelength >= 440 && wavelength < 490) {
     // Blue
-    return 450;
+    return 5;
   } else if (wavelength >= 490 && wavelength < 510) {
     // Cyan
-    return 500;
+    return 4;
   } else if (wavelength >= 510 && wavelength < 580) {
     // Green
-    return 550;
+    return 3;
   } else if (wavelength >= 580 && wavelength < 645) {
     // Yellow
-    return 600;
-  } else if (wavelength >= 645 && wavelength <= 750) {
+    return 2;
+  } else if (wavelength >= 645 && wavelength < 750) {
     // Red
-    return 700;
+    return 1;
+  } else if (wavelength >= 750 && wavelength < 1100) {
+    // Infrated
+    return 7;
+  } else if (wavelength >= 1100 && wavelength < 2010) {
+    // Radar
+    return 8;
+  } else if (wavelength >= -900 && wavelength < 380) {
+    // Ultraviolet
+    return 9;
   } else {
     // Black
-    return 0;
+    return -999;
   }
 }
-int RGBToRoundWavelength(float r, float g, float b) {
-  if(r > 230 && g > 230 && b > 230){
-    // White
-    return 0;
-  }
-  if(g < 25 && b > 230){
+int colorToWavelengthId(color a) {
+  if(hex(a).equals("FFA349A4")){
     // Violet
-    return 400;
-  } else if (r < 25 && b > 230) {
+    return 6;
+  } else if (hex(a).equals("FF3F48CC")) {
     // Blue
-    return 450;
-  } else if (r < 25 && g > 230) {
+    return 5;
+  } else if (hex(a).equals("FF00A2E8")) {
     // Cyan
-    return 500;
-  } else if (g > 230 && b < 25) {
+    return 4;
+  } else if (hex(a).equals("FF22B14C")) {
     // Green
-    return 550;
-  } else if (r < 25 && g != 0 && b < 25) {
+    return 3;
+  } else if (hex(a).equals("FFFFF200")) {
     // Yellow
-    return 600;
-  } else if (r < 25 && g < 25 && b < 25) {
+    return 2;
+  } else if (hex(a).equals("FFED1C24")) {
     // Red
-    return 700;
+    return 1;
+  } else if(hex(a).equals("FFFFFFFF")){
+    //White
+    return 0;
+  } else if(hex(a).equals("FF880015")){
+    //Infra
+    return 7;
+  } else if(hex(a).equals("FFC8BFE7")){
+    //Radar
+    return 8;
+  } else if(hex(a).equals("FFFFAEC9")){
+    //Ultra
+    return 9;
   } else {
     // Black
     return -1;
