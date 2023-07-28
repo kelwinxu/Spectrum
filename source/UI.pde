@@ -21,13 +21,13 @@ void showText(){
   }
   if(wl >= 380 && wl <= 750){
     text("<Visible Light>",height/2,50);
-  }else if(wl > 750 && wl <= 1100){
+  }else if(wl >= 750 && wl < 1100){
     text("<Infrated>",height/2,50);
-  }else if(wl > 1000 && wl <= 2010){
+  }else if(wl >= 1100 && wl < 2010){
     text("<Radar>",height/2,50);
-  }else if(wl > 2010 && wl <= 3100){
+  }else if(wl >= 2010 && wl < 3100){
     text("<FM/TV>",height/2,50);
-  }else if(wl > 3100 && wl <= 4010){
+  }else if(wl >= 3100 && wl < 4010){
     text("<ShortWave>",height/2,50);
   }else if(wl > 4010){
     text("<AM>",height/2,50);
@@ -53,16 +53,18 @@ float amplitude = 50.0;
 float period = 500.0;
 float dx; 
 float[] yvalues = new float[900];
+float interference;
 
 void updateWave() {
-  teta += 0.1;
+  teta += 0.1 + interference*0.01;
   period = pow(map(wl,-3000,4999,4,80),1.5);
   dx = TWO_PI / period;
   float x = teta;
   for (int i = 0; i < yvalues.length; i++) {
-    yvalues[i] = sin(x)*amplitude;
+    yvalues[i] = sin(x)*amplitude+random(-interference,interference);
     x+=dx;
   }
+  interference = 0;
 }
 void showWave() {
   noStroke();

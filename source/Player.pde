@@ -1,6 +1,7 @@
 Player p;
 
 class Player{
+  int level = 1;
   boolean isUp, isDown, isLeft, isRight;
   float speed = 5;
   float xVel, yVel, xRPos, yRPos;
@@ -38,12 +39,12 @@ class Player{
       yVel = -speed;
     }
     if(isDown){
-      yVel = speed;
+      yVel = speed;    
     }
   }
   boolean checkCollision(){
-    if(xRPos > speed && xRPos < map.width-speed && /*yRPos > speed &&*/ yRPos < map.height-speed){
-      if(brightness(map.pixels[int(yPos + height/2)*map.width+int(xPos + width/2)]) > 210){
+    if(xRPos > speed && xRPos < map.width-speed && yRPos > speed && yRPos < map.height-speed){
+      if(brightness(map.pixels[int(yPos + height/2)*map.width+int(xPos + width/2)]) > 30){
         if(xPos > pxPos) xPos--;
         if(xPos < pxPos) xPos++;
         if(yPos > pyPos) yPos--;
